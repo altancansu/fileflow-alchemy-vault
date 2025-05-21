@@ -45,9 +45,9 @@ const FileList: React.FC<FileListProps> = ({
   return (
     <div className="w-full">
       <div className="grid grid-cols-[auto_1fr_auto_auto] md:grid-cols-[auto_1fr_auto_auto_auto] gap-4 mb-2 text-sm text-muted-foreground px-4">
-        <div className="flex justify-center">Format</div>
-        <div>File Name</div>
-        {files.some(f => f.progress !== undefined) && <div className="hidden md:flex justify-center">Progress</div>}
+        <div className="flex justify-center text-center">Format</div>
+        <div className="pl-2">File Name</div>
+        {files.some(f => f.progress !== undefined) && <div className="hidden md:flex justify-center text-center">Progress</div>}
         <div className="text-right">Size</div>
         <div className="text-center">Delete</div>
       </div>
@@ -65,15 +65,15 @@ const FileList: React.FC<FileListProps> = ({
                 <FileIcon fileType={extension} />
               </div>
               
-              <div className="truncate text-sm">
+              <div className="truncate text-sm pl-2">
                 {fileItem.file.name}
               </div>
               
               {fileItem.progress !== undefined && (
-                <div className="hidden md:flex items-center space-x-2 min-w-[120px]">
-                  <div className="flex flex-col w-full">
-                    <Progress value={fileItem.progress} className="h-2" />
-                    <span className="text-xs mt-1">
+                <div className="hidden md:flex flex-col items-center min-w-[120px]">
+                  <Progress value={fileItem.progress} className="h-2 w-full" />
+                  <div className="w-full">
+                    <span className="text-xs mt-1 block">
                       {fileItem.isComplete ? 
                         <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
