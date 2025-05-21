@@ -51,7 +51,7 @@ const Index = () => {
           </section>
         )}
 
-        {/* Section 3: Action Panel */}
+        {/* Section 3: Action Panel - only show when there are files */}
         <section className="mb-8">
           <ActionPanel
             actions={actions}

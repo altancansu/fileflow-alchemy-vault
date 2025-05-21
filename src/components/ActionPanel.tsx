@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   FilePlus,
@@ -52,7 +51,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
 
   const getActionTitle = (actionType: string) => {
     switch (actionType) {
-      case 'convert': return 'Convert file to other format';
+      case 'convert': return 'Convert to other format';
       case 'resize': return 'Resize images';
       case 'combine': return 'Combine files';
       case 'reduce': return 'Reduce file size';
@@ -384,15 +383,77 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
     );
   };
 
+  // Only show if there are files
+  if (fileCount === 0) {
+    return null;
+  }
+
+  // If no actions yet, show the grid of action buttons
+  if (actions.length === 0) {
+    return (
+      <div className="w-full space-y-6">
+        <p className="text-center text-lg mb-6">Please select what you want</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <button
+            className="flex items-center justify-center gap-2 bg-secondary/50 hover:bg-secondary/80 text-foreground px-6 py-4 rounded-lg transition-colors"
+            onClick={() => handleActionSelect('convert')}
+          >
+            <Plus className="w-5 h-5" />
+            <span>Convert to other format</span>
+          </button>
+          
+          <button
+            className="flex items-center justify-center gap-2 bg-secondary/50 hover:bg-secondary/80 text-foreground px-6 py-4 rounded-lg transition-colors"
+            onClick={() => handleActionSelect('resize')}
+          >
+            <Plus className="w-5 h-5" />
+            <span>Resize images</span>
+          </button>
+          
+          <button
+            className="flex items-center justify-center gap-2 bg-secondary/50 hover:bg-secondary/80 text-foreground px-6 py-4 rounded-lg transition-colors"
+            onClick={() => handleActionSelect('combine')}
+          >
+            <Plus className="w-5 h-5" />
+            <span>Combine files</span>
+          </button>
+          
+          <button
+            className="flex items-center justify-center gap-2 bg-secondary/50 hover:bg-secondary/80 text-foreground px-6 py-4 rounded-lg transition-colors"
+            onClick={() => handleActionSelect('reduce')}
+          >
+            <Plus className="w-5 h-5" />
+            <span>Reduce file size</span>
+          </button>
+          
+          <button
+            className="flex items-center justify-center gap-2 bg-secondary/50 hover:bg-secondary/80 text-foreground px-6 py-4 rounded-lg transition-colors"
+            onClick={() => handleActionSelect('compress')}
+          >
+            <Plus className="w-5 h-5" />
+            <span>Compress files</span>
+          </button>
+          
+          <button
+            className="flex items-center justify-center gap-2 bg-secondary/50 hover:bg-secondary/80 text-foreground px-6 py-4 rounded-lg transition-colors"
+            onClick={() => handleActionSelect('rename')}
+          >
+            <Plus className="w-5 h-5" />
+            <span>File renaming</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // If there are already actions, show the actions and controls
   return (
     <div className="w-full space-y-6">
-      {actions.length > 0 && (
-        <div className="space-y-2">
-          {actions.map((action) => (
-            <ActionConfig key={action.id} action={action} />
-          ))}
-        </div>
-      )}
+      <div className="space-y-2">
+        {actions.map((action) => (
+          <ActionConfig key={action.id} action={action} />
+        ))}
+      </div>
 
       <div className="relative">
         {showActionMenu && (
@@ -403,7 +464,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
                 onClick={() => handleActionSelect('convert')}
               >
                 <FileCode className="w-4 h-4" />
-                <span>Convert file to other format</span>
+                <span>Convert to other format</span>
               </button>
               <button
                 className="w-full flex items-center gap-2 p-2 hover:bg-white/10 rounded-md text-left"
@@ -444,51 +505,35 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
           </div>
         )}
         
-        {!showMore ? (
-          <div className="text-center">
+        <div className="flex flex-col md:flex-row gap-4 flex-wrap">
+          <button
+            className="action-button"
+            onClick={() => setShowActionMenu(!showActionMenu)}
+          >
+            <Plus className="w-5 h-5" />
+            <span>{showActionMenu ? 'Cancel' : 'Add an action'}</span>
+          </button>
+          
+          <div className="flex gap-4 justify-center md:justify-start flex-wrap">
             <button
-              className="action-button mx-auto"
-              onClick={() => setShowMore(true)}
+              className="flex items-center gap-2 bg-secondary/40 hover:bg-secondary text-foreground/70 px-4 py-2 rounded-lg transition-colors"
+              onClick={onSaveActionSet}
+              disabled={actions.length === 0}
             >
-              <Plus className="w-5 h-5" />
-              <span>Add an action</span>
+              <Save className="w-5 h-5" />
+              <span>Save this action set</span>
+            </button>
+            
+            <button
+              className="primary-button flex items-center gap-2"
+              onClick={onProcess}
+              disabled={actions.length === 0}
+            >
+              <Download className="w-5 h-5" />
+              <span>Process & Download</span>
             </button>
           </div>
-        ) : (
-          <>
-            {fileCount > 0 && (
-              <div className="flex flex-col md:flex-row gap-4 flex-wrap">
-                <button
-                  className="action-button"
-                  onClick={() => setShowActionMenu(!showActionMenu)}
-                >
-                  <Plus className="w-5 h-5" />
-                  <span>{showActionMenu ? 'Cancel' : 'Add an action'}</span>
-                </button>
-                
-                <div className="flex gap-4 justify-center md:justify-start flex-wrap">
-                  <button
-                    className="flex items-center gap-2 bg-secondary/40 hover:bg-secondary text-foreground/70 px-4 py-2 rounded-lg transition-colors"
-                    onClick={onSaveActionSet}
-                    disabled={actions.length === 0}
-                  >
-                    <Save className="w-5 h-5" />
-                    <span>Save this action set</span>
-                  </button>
-                  
-                  <button
-                    className="primary-button flex items-center gap-2"
-                    onClick={onProcess}
-                    disabled={actions.length === 0}
-                  >
-                    <Download className="w-5 h-5" />
-                    <span>Process & Download</span>
-                  </button>
-                </div>
-              </div>
-            )}
-          </>
-        )}
+        </div>
       </div>
     </div>
   );
