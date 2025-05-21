@@ -2,6 +2,7 @@
 import React from 'react';
 import { Trash2 } from 'lucide-react';
 import FileIcon from './FileIcon';
+import { Progress } from "@/components/ui/progress";
 
 export interface FileItem {
   id: string;
@@ -44,11 +45,11 @@ const FileList: React.FC<FileListProps> = ({
   return (
     <div className="w-full">
       <div className="grid grid-cols-[auto_1fr_auto_auto] md:grid-cols-[auto_1fr_auto_auto_auto] gap-4 mb-2 text-sm text-muted-foreground px-4">
-        <div>Format</div>
-        <div>File name</div>
-        {files.some(f => f.progress !== undefined) && <div className="hidden md:block">Progress</div>}
-        <div>Size</div>
-        <div>Delete</div>
+        <div className="flex justify-center">Format</div>
+        <div>File Name</div>
+        {files.some(f => f.progress !== undefined) && <div className="hidden md:flex justify-center">Progress</div>}
+        <div className="text-right">Size</div>
+        <div className="text-center">Delete</div>
       </div>
       
       <div className="space-y-2 max-h-[400px] overflow-y-auto pr-1">
@@ -70,34 +71,33 @@ const FileList: React.FC<FileListProps> = ({
               
               {fileItem.progress !== undefined && (
                 <div className="hidden md:flex items-center space-x-2 min-w-[120px]">
-                  <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
-                    <div 
-                      className={`h-full ${fileItem.isComplete ? 'bg-green-500' : 'bg-primary'}`}
-                      style={{ width: `${fileItem.progress}%` }}
-                    />
+                  <div className="flex flex-col w-full">
+                    <Progress value={fileItem.progress} className="h-2" />
+                    <span className="text-xs mt-1">
+                      {fileItem.isComplete ? 
+                        <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                        </svg> : 
+                        `${fileItem.progress}%`
+                      }
+                    </span>
                   </div>
-                  <span className="text-xs whitespace-nowrap">
-                    {fileItem.isComplete ? 
-                      <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                      </svg> : 
-                      `${fileItem.progress}%`
-                    }
-                  </span>
                 </div>
               )}
               
-              <div className="text-sm text-muted-foreground whitespace-nowrap">
+              <div className="text-sm text-muted-foreground text-right whitespace-nowrap">
                 {formatFileSize(fileItem.file.size)}
               </div>
               
-              <button 
-                onClick={() => onDeleteFile(fileItem.id)}
-                className="p-1 hover:bg-destructive/20 rounded-full transition-colors"
-                aria-label="Delete file"
-              >
-                <Trash2 className="w-5 h-5 text-muted-foreground hover:text-destructive" />
-              </button>
+              <div className="flex justify-center">
+                <button 
+                  onClick={() => onDeleteFile(fileItem.id)}
+                  className="p-1 hover:bg-destructive/20 rounded-full transition-colors"
+                  aria-label="Delete file"
+                >
+                  <Trash2 className="w-5 h-5 text-muted-foreground hover:text-destructive" />
+                </button>
+              </div>
             </div>
           );
         })}
