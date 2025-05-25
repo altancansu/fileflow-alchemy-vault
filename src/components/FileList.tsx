@@ -71,29 +71,31 @@ const FileList: React.FC<FileListProps> = ({
                 <FileIcon fileType={extension} />
               </div>
               
-              <div className="truncate text-sm">
+              <div className="truncate text-sm flex items-center">
                 {fileItem.file.name}
               </div>
               
               {fileItem.progress !== undefined && (
-                <div className="hidden md:flex flex-col w-[120px] justify-center">
-                  <Progress value={fileItem.progress} className="h-2 w-full mb-1" />
-                  <div className="text-xs text-center">
-                    {fileItem.isComplete ? 
-                      <svg className="w-4 h-4 text-green-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                      </svg> : 
-                      `${fileItem.progress}%`
-                    }
+                <div className="hidden md:flex items-center justify-center w-[120px]">
+                  <div className="flex flex-col w-full">
+                    <Progress value={fileItem.progress} className="h-2 w-full mb-1" />
+                    <div className="text-xs text-center">
+                      {fileItem.isComplete ? 
+                        <svg className="w-4 h-4 text-green-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                        </svg> : 
+                        `${fileItem.progress}%`
+                      }
+                    </div>
                   </div>
                 </div>
               )}
               
-              <div className="text-sm text-muted-foreground text-right whitespace-nowrap">
+              <div className="text-sm text-muted-foreground text-right whitespace-nowrap flex items-center justify-end">
                 {formatFileSize(fileItem.file.size)}
               </div>
               
-              <div className="flex justify-center">
+              <div className="flex justify-center items-center">
                 <button 
                   onClick={() => onDeleteFile(fileItem.id)}
                   className="p-1 hover:bg-destructive/20 rounded-full transition-colors"
