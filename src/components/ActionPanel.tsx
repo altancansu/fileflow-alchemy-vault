@@ -15,6 +15,11 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 
 export interface ActionItem {
   id: string;
@@ -52,9 +57,9 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
 
   const getActionTitle = (actionType: string) => {
     switch (actionType) {
-      case 'convert': return 'Convert to other format';
+      case 'convert': return 'Convert file to other format';
       case 'resize': return 'Resize images';
-      case 'combine': return 'Combine files';
+      case 'combine': return 'Combine files together';
       case 'reduce': return 'Reduce file size';
       case 'compress': return 'Compress files';
       case 'rename': return 'File renaming';
@@ -463,94 +468,98 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
         ))}
       </div>
 
-      <div className="relative">
-        {showActionMenu && (
-          <div className="absolute bottom-full left-0 mb-2 bg-secondary border border-border rounded-lg shadow-lg w-64 overflow-hidden z-10">
-            <div className="p-2 space-y-1">
-              <button
-                className="w-full flex items-center gap-2 p-2 hover:bg-white/10 rounded-md text-left"
-                onClick={() => handleActionSelect('convert')}
-              >
-                <FileCode className="w-4 h-4" />
-                <span>Convert to other format</span>
-              </button>
-              <button
-                className="w-full flex items-center gap-2 p-2 hover:bg-white/10 rounded-md text-left"
-                onClick={() => handleActionSelect('resize')}
-              >
-                <ImageIcon className="w-4 h-4" />
-                <span>Resize images</span>
-              </button>
-              <button
-                className="w-full flex items-center gap-2 p-2 hover:bg-white/10 rounded-md text-left"
-                onClick={() => handleActionSelect('combine')}
-              >
-                <Folder className="w-4 h-4" />
-                <span>Combine files</span>
-              </button>
-              <button
-                className="w-full flex items-center gap-2 p-2 hover:bg-white/10 rounded-md text-left"
-                onClick={() => handleActionSelect('reduce')}
-              >
-                <FileX className="w-4 h-4" />
-                <span>Reduce file size</span>
-              </button>
-              <button
-                className="w-full flex items-center gap-2 p-2 hover:bg-white/10 rounded-md text-left"
-                onClick={() => handleActionSelect('compress')}
-              >
-                <FolderInput className="w-4 h-4" />
-                <span>Compress files</span>
-              </button>
-              <button
-                className="w-full flex items-center gap-2 p-2 hover:bg-white/10 rounded-md text-left"
-                onClick={() => handleActionSelect('rename')}
-              >
-                <FilePlus className="w-4 h-4" />
-                <span>File renaming</span>
-              </button>
-            </div>
-          </div>
-        )}
+      <div className="flex justify-between items-end">
+        {/* Left side - Save button */}
+        <Button
+          variant="outline"
+          onClick={onSaveActionSet}
+          disabled={actions.length === 0}
+          className="flex items-center gap-2"
+        >
+          <Save className="w-5 h-5" />
+          <span>Save this action set</span>
+        </Button>
         
-        <div className="flex justify-between items-end">
-          {/* Left side - Save button */}
+        {/* Right side - Add action button, Process button and file size */}
+        <div className="flex flex-col items-end gap-2">
+          {/* Circular Add Action Button with Popover */}
+          <Popover open={showActionMenu} onOpenChange={setShowActionMenu}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full w-10 h-10"
+              >
+                <Plus className="w-5 h-5" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-64 p-3 bg-background border border-border" align="end">
+              <div className="text-sm font-medium text-foreground mb-3">Add an action</div>
+              <div className="space-y-2">
+                <button
+                  className="w-full flex items-center gap-3 p-3 rounded-lg bg-secondary/60 hover:bg-secondary/80 transition-colors text-left"
+                  onClick={() => handleActionSelect('rename')}
+                >
+                  <Plus className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-foreground">File renaming</span>
+                </button>
+                <button
+                  className="w-full flex items-center gap-3 p-3 rounded-lg bg-secondary/60 hover:bg-secondary/80 transition-colors text-left"
+                  onClick={() => handleActionSelect('reduce')}
+                >
+                  <Plus className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-foreground">Reduce file size</span>
+                </button>
+                <button
+                  className="w-full flex items-center gap-3 p-3 rounded-lg bg-secondary/60 hover:bg-secondary/80 transition-colors text-left"
+                  onClick={() => handleActionSelect('compress')}
+                >
+                  <Plus className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-foreground">Compress files</span>
+                </button>
+                <button
+                  className="w-full flex items-center gap-3 p-3 rounded-lg bg-secondary/60 hover:bg-secondary/80 transition-colors text-left"
+                  onClick={() => handleActionSelect('resize')}
+                >
+                  <Plus className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-foreground">Resize images</span>
+                </button>
+                <button
+                  className="w-full flex items-center gap-3 p-3 rounded-lg bg-secondary/60 hover:bg-secondary/80 transition-colors text-left"
+                  onClick={() => handleActionSelect('convert')}
+                >
+                  <Plus className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-foreground">Convert file to other format</span>
+                </button>
+                <button
+                  className="w-full flex items-center gap-3 p-3 rounded-lg bg-secondary/60 hover:bg-secondary/80 transition-colors text-left"
+                  onClick={() => handleActionSelect('combine')}
+                >
+                  <Plus className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-foreground">Combine files together</span>
+                </button>
+              </div>
+              <div className="flex justify-center mt-4">
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Plus className="w-5 h-5 text-primary" />
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
+          
+          {/* Process button */}
           <Button
-            variant="outline"
-            onClick={onSaveActionSet}
+            onClick={onProcess}
             disabled={actions.length === 0}
             className="flex items-center gap-2"
           >
-            <Save className="w-5 h-5" />
-            <span>Save this action set</span>
+            <Download className="w-5 h-5" />
+            <span>Process & Download</span>
           </Button>
           
-          {/* Right side - Add action button, Process button and file size */}
-          <div className="flex flex-col items-end gap-2">
-            {/* Circular Add Action Button */}
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setShowActionMenu(!showActionMenu)}
-              className="rounded-full w-10 h-10"
-            >
-              <Plus className="w-5 h-5" />
-            </Button>
-            
-            {/* Process button */}
-            <Button
-              onClick={onProcess}
-              disabled={actions.length === 0}
-              className="flex items-center gap-2"
-            >
-              <Download className="w-5 h-5" />
-              <span>Process & Download</span>
-            </Button>
-            
-            {/* File size info */}
-            <div className="text-sm text-muted-foreground">
-              Total {fileCount} files {getTotalFileSize()}
-            </div>
+          {/* File size info */}
+          <div className="text-sm text-muted-foreground">
+            Total {fileCount} files {getTotalFileSize()}
           </div>
         </div>
       </div>
