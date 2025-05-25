@@ -14,6 +14,7 @@ import {
   FileX
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 
 export interface ActionItem {
   id: string;
@@ -515,23 +516,24 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
           </button>
           
           <div className="flex gap-4 justify-center md:justify-start flex-wrap">
-            <button
-              className="flex items-center gap-2 bg-secondary/40 hover:bg-secondary text-foreground/70 px-4 py-2 rounded-lg transition-colors"
+            <Button
+              variant="outline"
               onClick={onSaveActionSet}
               disabled={actions.length === 0}
+              className="flex items-center gap-2"
             >
               <Save className="w-5 h-5" />
               <span>Save this action set</span>
-            </button>
+            </Button>
             
-            <button
-              className="primary-button flex items-center gap-2"
+            <Button
               onClick={onProcess}
               disabled={actions.length === 0}
+              className="flex items-center gap-2"
             >
               <Download className="w-5 h-5" />
               <span>Process & Download</span>
-            </button>
+            </Button>
           </div>
         </div>
       </div>
