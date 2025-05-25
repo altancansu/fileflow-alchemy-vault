@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Trash2, ChevronDown, ChevronUp } from 'lucide-react';
 import FileIcon from './FileIcon';
@@ -75,17 +76,15 @@ const FileList: React.FC<FileListProps> = ({
               </div>
               
               {fileItem.progress !== undefined && (
-                <div className="hidden md:flex flex-col w-[120px] items-center justify-center">
-                  <Progress value={fileItem.progress} className="h-2 w-full" />
-                  <div className="w-full flex justify-center">
-                    <span className="text-xs mt-1">
-                      {fileItem.isComplete ? 
-                        <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                        </svg> : 
-                        `${fileItem.progress}%`
-                      }
-                    </span>
+                <div className="hidden md:flex flex-col w-[120px] justify-center">
+                  <Progress value={fileItem.progress} className="h-2 w-full mb-1" />
+                  <div className="text-xs text-center">
+                    {fileItem.isComplete ? 
+                      <svg className="w-4 h-4 text-green-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                      </svg> : 
+                      `${fileItem.progress}%`
+                    }
                   </div>
                 </div>
               )}
