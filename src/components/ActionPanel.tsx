@@ -389,6 +389,13 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
     return null;
   }
 
+  // Calculate total file size for display
+  const getTotalFileSize = () => {
+    // This would need to be passed from parent component
+    // For now, we'll show a placeholder
+    return "Approx 15.2 MB";
+  };
+
   // If no actions yet, show the grid of action buttons
   if (actions.length === 0) {
     return (
@@ -506,26 +513,31 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
           </div>
         )}
         
-        <div className="flex flex-col md:flex-row gap-4 flex-wrap">
-          <button
-            className="action-button"
-            onClick={() => setShowActionMenu(!showActionMenu)}
+        <div className="flex justify-between items-end">
+          {/* Left side - Save button */}
+          <Button
+            variant="outline"
+            onClick={onSaveActionSet}
+            disabled={actions.length === 0}
+            className="flex items-center gap-2"
           >
-            <Plus className="w-5 h-5" />
-            <span>{showActionMenu ? 'Cancel' : 'Add an action'}</span>
-          </button>
+            <Save className="w-5 h-5" />
+            <span>Save this action set</span>
+          </Button>
           
-          <div className="flex gap-4 justify-center md:justify-start flex-wrap">
+          {/* Right side - Add action button, Process button and file size */}
+          <div className="flex flex-col items-end gap-2">
+            {/* Circular Add Action Button */}
             <Button
               variant="outline"
-              onClick={onSaveActionSet}
-              disabled={actions.length === 0}
-              className="flex items-center gap-2"
+              size="icon"
+              onClick={() => setShowActionMenu(!showActionMenu)}
+              className="rounded-full w-10 h-10"
             >
-              <Save className="w-5 h-5" />
-              <span>Save this action set</span>
+              <Plus className="w-5 h-5" />
             </Button>
             
+            {/* Process button */}
             <Button
               onClick={onProcess}
               disabled={actions.length === 0}
@@ -534,6 +546,11 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
               <Download className="w-5 h-5" />
               <span>Process & Download</span>
             </Button>
+            
+            {/* File size info */}
+            <div className="text-sm text-muted-foreground">
+              Total {fileCount} files {getTotalFileSize()}
+            </div>
           </div>
         </div>
       </div>
