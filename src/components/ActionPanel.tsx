@@ -13,7 +13,6 @@ import {
   FolderInput,
   FileX
 } from 'lucide-react';
-import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import {
   Popover,
@@ -52,7 +51,6 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
   const handleActionSelect = (actionType: string) => {
     onAddAction(actionType);
     setShowActionMenu(false);
-    toast.success(`Added ${getActionTitle(actionType)} action`);
   };
 
   const getActionTitle = (actionType: string) => {
@@ -482,15 +480,15 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
         
         {/* Right side - Add action button, Process button and file size */}
         <div className="flex flex-col items-end gap-2">
-          {/* Circular Add Action Button with Popover */}
+          {/* Circular Add Action Button with Popover - Updated styling */}
           <Popover open={showActionMenu} onOpenChange={setShowActionMenu}>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
                 size="icon"
-                className="rounded-full w-10 h-10"
+                className="rounded-full w-10 h-10 aspect-square bg-blue-600 hover:bg-blue-700 border-blue-600"
               >
-                <Plus className="w-5 h-5" />
+                <Plus className="w-5 h-5 text-white" />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-64 p-3 bg-background border border-border" align="end">
@@ -538,11 +536,6 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
                   <Plus className="w-4 h-4 text-muted-foreground" />
                   <span className="text-sm text-foreground">Combine files together</span>
                 </button>
-              </div>
-              <div className="flex justify-center mt-4">
-                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                  <Plus className="w-5 h-5 text-primary" />
-                </div>
               </div>
             </PopoverContent>
           </Popover>
