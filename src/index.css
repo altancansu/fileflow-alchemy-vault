@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    --background: #282828;
+    --background: 40 40 40;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
     --card-foreground: 0 0% 98%;
@@ -43,7 +43,10 @@
 }
 
 .file-drop-area {
-  @apply border-2 border-dashed border-white/30 rounded-lg p-10 flex flex-col items-center justify-center bg-secondary/60 transition-all;
+  @apply border-2 border-dashed rounded-lg p-10 flex flex-col items-center justify-center transition-all;
+  background-color: rgba(93, 75, 140, 0.2);
+  border-color: rgba(201, 179, 255, 1);
+  border-width: 1px;
 }
 
 .file-drop-area.active {
